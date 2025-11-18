@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACK GAMING | OFERTAS</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /*variables y clases*/
+        :root {
+            --flash-primary: #35c2bb; 
+            --flash-accent: #000000; 
+            --flash-bg: #ffffff; 
+            --flash-card: #b6b321; 
+            --flash-text: #000000; 
+        }
+        .text-flash-primary { color: var(--flash-primary); }
+        .bg-flash-primary { background-color: var(--flash-primary); }
+        .text-flash-accent { color: var(--flash-accent); }
+        .bg-flash-accent { background-color: var(--flash-accent); }
+        
+        /*estilos y contenedores*/
+        body {
+            background-color: var(--flash-bg);
+            color: var(--flash-text);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /*input*/
+        .input-style:focus {
+            outline: 2px solid var(--flash-accent);
+            border-color: var(--flash-accent);
+            box-shadow: 0 0 0 1px var(--flash-accent);
+        }
+
+        /*spinner*/
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--flash-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /*metascore*/
+        .score-box {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4px 6px;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--flash-bg);
+            min-width: 45px;
+            border: 1px solid var(--flash-bg);
+        }
+        .score-green { background-color: #e7d427; } 
+        .score-yellow { background-color: #08b67c; } 
+        .score-red { background-color: var(--flash-primary); color: var(--flash-text); border: 1px solid var(--flash-text); } 
+        .score-unknown { background-color: #ffb488; color: rgb(0, 0, 0); } 
+
+        /*modal*/
+        .modal {
+            transition: opacity 0.3s ease-out;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="font-[Inter]">
+
+    <header class="sticky top-0 z-10 border-b-4 shadow-lg bg-flash-card border-flash-primary">
+        <div class="px-4 py-5 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <h1 class="text-5xl font-black tracking-widest text-flash-accent">BLACK GAMING </h1>
+        </div>
+    </header>
+
+    <main class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+
+        <section id="controls" class="p-5 mb-8 border-l-4 shadow-xl bg-flash-card border-flash-accent">
+            <h2 class="pb-3 mb-5 text-2xl font-bold border-b border-gray-700 text-flash-text">TERMINAL DE BÚSQUEDA</h2>
+            
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-4">
+                
+                <div class="flex space-x-3 md:col-span-2">
+                    <input type="text" id="searchQuery" placeholder="Buscar ID de título..."
+                            class="w-full p-3 placeholder-gray-500 border border-gray-600 rounded-sm input-style text-flash-text focus:ring-0 focus:border-flash-accent bg-flash-bg">
+                    <button id="searchButton"
+                            class="flex items-center justify-center p-3 font-extrabold transition duration-150 rounded-sm shadow-md text-flash-bg bg-flash-primary hover:bg-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                        <span class="hidden ml-2 sm:inline">BUSCAR</span>
+                    </button>
+                </div>
+
+                <div>
+                    <select id="storeFilter"
+                            class="w-full p-3 border border-gray-600 rounded-sm input-style text-flash-text bg-flash-bg focus:ring-0 focus:border-flash-accent">
+                        <option value="">FILTRO: Tiendas</option>
+                        </select>
+                </div>
+
+                <div>
+                    <select id="sortOrder"
+                            class="w-full p-3 border border-gray-600 rounded-sm input-style text-flash-text bg-flash-bg focus:ring-0 focus:border-flash-accent">
+                        <option value="Savings">ORDEN: Descuento</option>
+                        <option value="Price">ORDEN: Precio</option>
+                        <option value="Metacritic">ORDEN: Metascore</option>
+                        <option value="Title">ORDEN: Nombre</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <div id="messageContainer" 
+             class="hidden p-4 mb-8 font-semibold transition-all duration-300 border-l-4 rounded-none shadow-md text-flash-text bg-flash-card border-flash-accent" 
+             role="alert">
+            </div>
+
+        <div id="loadingIndicator" class="items-center justify-center hidden py-16 text-center">
+            <div class="w-16 h-16 mx-auto spinner"></div>
+            <p class="mt-6 text-xl font-bold text-flash-accent">ESPERE</p>
+        </div>
+
+        <section id="gamesGrid" 
+                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[50vh] border-t border-b border-gray-700 py-6">
+            </section>
+
+        <div class="flex justify-center mt-10">
+            <button id="loadMoreButton"
+                    class="hidden bg-flash-accent text-flash-bg px-10 py-4 rounded-sm font-black text-lg shadow-xl hover:bg-cyan-500 transition duration-150 transform hover:scale-[1.01] border-2 border-flash-primary uppercase">
+                // DESCARGAR SIGUIENTE PAQUETE DE OFERTAS
+            </button>
+        </div>
+    </main>
+
+    <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black modal bg-opacity-90">
+        <div id="modalContainer" 
+             class="relative w-full max-w-lg overflow-hidden transition-all duration-300 transform scale-100 translate-y-0 border-2 rounded-none shadow-2xl bg-flash-card border-flash-primary">
+            </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
