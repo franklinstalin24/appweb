@@ -442,5 +442,3 @@ async function initializeApp() {
     showMessage('¡Bienvenido! Busca por título o explora las ofertas actuales.', 'info');
 }
 
-// empezar app
-initializeApp();
