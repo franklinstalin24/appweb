@@ -207,9 +207,15 @@ function renderDeals(deals) {
 function createDealCard(deal) {
     const metascore = parseInt(deal.metacriticScore) || 0;
     const salePrice = parseFloat(deal.salePrice);
-    const retailPrice = parseFloat(deal.normalPrice) || (salePrice * 1.5); 
-    const savings = retailPrice > salePrice ? Math.round(((retailPrice - salePrice) / retailPrice) * 100) : 0;
-    const storeName = stores[deal.storeID] || 'Tienda Desconocida'; 
+    const retailPrice = parseFloat(deal.normalPrice); // Usar solo el valor real
+const originalPrice = isNaN(retailPrice) || retailPrice < salePrice ? salePrice * 1.5 : retailPrice; // Fallback más explícito
+
+const savings = originalPrice > salePrice 
+    ? Math.round(((originalPrice - salePrice) / originalPrice) * 100) 
+    : 0;
+
+const storeName = stores[deal.storeID] || 'Tienda Desconocida';
+
     
     const card = document.createElement('div');
     card.className = 'overflow-hidden transition-shadow border-2 border-transparent rounded-lg shadow-md cursor-pointer bg-flash-card hover:shadow-xl hover:border-2 hover:border-flash-primary'; 
