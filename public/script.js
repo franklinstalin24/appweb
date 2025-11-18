@@ -169,14 +169,17 @@ async function loadDeals(isNewSearch = true) {
         } else if (dealsToRender.length > 0) {
             renderDeals(dealsToRender); 
 
-            // Verificar si mostrar botón cargar mas
-            if (!lastSearchQuery && totalResults === GAMES_PER_PAGE) {
-                loadMoreButton.classList.remove('hidden');
-            } else if (lastSearchQuery && totalResults === GAMES_PER_PAGE) {
-                 loadMoreButton.classList.remove('hidden');
-            } else {
-                 loadMoreButton.classList.add('hidden');
-            }
+            if (dealsToRender.length > 0) {
+    renderDeals(dealsToRender); 
+
+    // Simplificar: si el resultado es menor al tamaño de la página, asumimos que no hay más.
+    if (totalResults === GAMES_PER_PAGE) {
+        loadMoreButton.classList.remove('hidden');
+    } else {
+        loadMoreButton.classList.add('hidden');
+    }
+}
+            
         }
         
         currentPage++; 
