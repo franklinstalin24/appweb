@@ -1,5 +1,5 @@
 //variables
-console.log('commit 4: debug log');
+
 const API_BASE_URL = 'https://www.cheapshark.com/api/1.0';
 const GAMES_PER_PAGE = 12;
 let currentPage = 0;
