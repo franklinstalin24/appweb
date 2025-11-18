@@ -72,8 +72,12 @@ function showMessage(message, type = 'info') {
  */
 function formatPrice(price) {
     price = parseFloat(price);
+    
+    // Nueva verificación: Es más eficiente manejar el 'Gratis' al inicio
+    if (price === 0) return 'Gratis'; 
+
     if (isNaN(price)) return 'N/A';
-    if (price === 0.00) return 'Gratis';
+
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 }
 
